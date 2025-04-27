@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -33,12 +34,27 @@ import com.mahadiks.basketballapp.viewmodel.ScheduleViewModel
 fun ScheduleScreen(modifier: Modifier, viewModel: ScheduleViewModel) {
 
     Column(
-        modifier = modifier,
+        modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
         if (viewModel.isLoading) {
-            CircularProgressIndicator(modifier = Modifier.fillMaxSize())
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator(
+                        strokeWidth = 4.dp, modifier = Modifier.size(100.dp)
+                    )
+
+                    Text(
+                        text = "Loading..!",
+                        style = MaterialTheme.typography.bodyLarge,
+                    )
+                }
+            }
+
         } else {
             val scheduleList = viewModel.teamsSchedule.observeAsState(initial = emptyList())
             val list = scheduleList.value.toList()
