@@ -14,7 +14,7 @@ position.
 - Build App in MVVM architecture
 
 ### Screens
-![App Screenshot](assets/screenshots/one.png)
-![App Screenshot](assets/screenshots/two.png)
-![App Screenshot](assets/screenshots/three.png)
-![App Screenshot](assets/screenshots/four.png)
+![App Screenshot](app/src/main/assets/screenshots/one.png)
+![App Screenshot](app/src/main/assets/screenshots/two.png)
+![App Screenshot](app/src/main/assets/screenshots/three.png)
+![App Screenshot](app/src/main/assets/screenshots/four.png)
