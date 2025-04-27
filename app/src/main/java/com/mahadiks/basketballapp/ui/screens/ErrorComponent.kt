@@ -37,7 +37,6 @@ fun ErrorScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        // You can use Lottie animation if you want, else a simple GIF
         LottieErrorAnimation()
 
         Spacer(modifier = Modifier.height(32.dp))

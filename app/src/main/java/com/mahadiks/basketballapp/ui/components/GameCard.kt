@@ -27,11 +27,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.graphics.toColorInt
 import androidx.core.net.toUri
 import coil.compose.AsyncImage
 import com.mahadiks.basketballapp.models.HomeTeam
 import com.mahadiks.basketballapp.models.TeamsSchedule
 import com.mahadiks.basketballapp.models.VisitedTeam
+import com.mahadiks.basketballapp.util.lightenColor
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -52,7 +54,7 @@ fun GameCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
-        // colors = CardDefaults.cardColors(containerColor = primaryColor),
+        colors = CardDefaults.cardColors(containerColor = lightenColor(Color("#${homeTeam?.teamColor}".toColorInt()))),
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
@@ -177,9 +179,7 @@ fun BuyTicketButton(buyTicket: String) {
             .background(MaterialTheme.colorScheme.tertiaryContainer, RoundedCornerShape(50))
             .padding(horizontal = 12.dp, vertical = 1.dp), contentAlignment = Alignment.Center) {
             Text(
-                text = "Buy Ticket on TicketMaster",
-                fontWeight = FontWeight.W900,
-                fontSize = 14.sp
+                text = "Buy Ticket on TicketMaster", fontWeight = FontWeight.W900, fontSize = 14.sp
             )
         }
     }

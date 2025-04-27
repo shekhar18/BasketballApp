@@ -11,4 +11,6 @@ data class Teams(
     val teamShortName:String,
     @SerializedName("tc")
     val teamFullName:String,
+    @SerializedName("color")
+    val teamColor:String,
 )

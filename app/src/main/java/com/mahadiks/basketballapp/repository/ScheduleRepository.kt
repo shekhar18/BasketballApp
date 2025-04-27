@@ -42,7 +42,8 @@ class ScheduleRepository @Inject constructor(
                     teamId = homeTeamInfo.teamId,
                     teamLogo = homeTeamInfo.teamLogoUrl,
                     teamShortName = homeTeamInfo.teamShortName,
-                    teamScore = scheduleItem.homeTeam.teamScore
+                    teamScore = scheduleItem.homeTeam.teamScore,
+                    teamColor = homeTeamInfo.teamColor
                 ),
                 visitedTeam = VisitedTeam(
                     teamFullName = visitedTeamInfo.teamFullName,

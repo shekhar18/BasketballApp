@@ -5,5 +5,6 @@ data class HomeTeam(
     val teamShortName:String,
     val teamLogo:String,
     val teamScore:String,
-    val teamId:String
+    val teamId:String,
+    val teamColor:String
 )
