@@ -13,7 +13,7 @@ background for each game row).
 position.
 - Build App in MVVM architecture
 
-![App Screenshot](assets/screenshots/one.png)
-![App Screenshot](assets/screenshots/two.png)
-![App Screenshot](assets/screenshots/three.png)
-![App Screenshot](assets/screenshots/four.png)
+![App Screenshot](assets/one.png)
+![App Screenshot](assets/two.png)
+![App Screenshot](assets/three.png)
+![App Screenshot](assets/four.png)
