@@ -4,7 +4,6 @@ package com.mahadiks.basketballapp.repository
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.ui.text.toUpperCase
 import com.google.gson.Gson
 import com.mahadiks.basketballapp.models.DataS
 import com.mahadiks.basketballapp.models.DataT
@@ -13,67 +12,59 @@ import com.mahadiks.basketballapp.models.TeamsSchedule
 import com.mahadiks.basketballapp.models.VisitedTeam
 import com.mahadiks.basketballapp.util.formatGameDate
 import com.mahadiks.basketballapp.util.formatGameYearAndMonth
-import com.mahadiks.basketballapp.util.parseTimeString
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.delay
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 import java.util.Locale
+import javax.inject.Inject
 
-
-class ScheduleRepository(val context: Context) {
-
+class ScheduleRepository @Inject constructor(
+    @ApplicationContext private val context: Context
+) {
 
     @RequiresApi(Build.VERSION_CODES.O)
     suspend fun getTeamSchedule(): List<TeamsSchedule> {
-        delay(1000L)
-        val scheduleJsonObject =
-            context.assets.open("Schedule.json").bufferedReader().use { it.readText() }
-        val teamsJsonObject =
-            context.assets.open("teams.json").bufferedReader().use { it.readText() }
+        delay(3000L)
+        //read the Json files
+        val scheduleData = parseJsonAsset<DataS>("Schedule.json")
+        val teamsData = parseJsonAsset<DataT>("teams.json")
 
+        val teamsMap = teamsData.data.teamsList.associateBy { it.teamId }
+        val teamsScheduleList = scheduleData.data.listSchedule.mapNotNull { scheduleItem ->
 
-        val schedule = Gson().fromJson(scheduleJsonObject, DataS::class.java)
-        val teams = Gson().fromJson(teamsJsonObject, DataT::class.java)
+            val homeTeamInfo = teamsMap[scheduleItem.homeTeam.teamId]
+            val visitedTeamInfo = teamsMap[scheduleItem.visitedTeam.teamId]
 
-        val teamsScheduleList = mutableListOf<TeamsSchedule>()
-        for (scheduleItem in schedule.data.listSchedule) {
-            var homeTeam: HomeTeam? = null
-            var visitedTeam: VisitedTeam? = null
-            for (teamsItem in teams.data.teamsList) {
-                if (scheduleItem.homeTeam.teamId == teamsItem.teamId) {
-                    homeTeam = HomeTeam(
-                        teamFullName = teamsItem.teamFullName,
-                        teamId = teamsItem.teamId,
-                        teamLogo = teamsItem.teamLogoUrl,
-                        teamShortName = teamsItem.teamShortName,
-                        teamScore = scheduleItem.homeTeam.teamScore
-                    )
-                }
-            }
-            for (teamsItem in teams.data.teamsList) {
+            if (homeTeamInfo == null || visitedTeamInfo == null) return@mapNotNull null
 
-                if (scheduleItem.visitedTeam.teamId == teamsItem.teamId) {
-                    visitedTeam = VisitedTeam(
-                        teamFullName = teamsItem.teamFullName,
-                        teamId = teamsItem.teamId,
-                        teamLogo = teamsItem.teamLogoUrl,
-                        teamShortName = teamsItem.teamShortName,
-                        teamScore = scheduleItem.visitedTeam.teamScore
-                    )
-                }
-            }
-            val teamsSchedule = TeamsSchedule(
-                homeTeam = homeTeam,
-                visitedTeam = visitedTeam,
-                gameDate = formatGameDate(scheduleItem.gameTimeAndDate) ,
+            TeamsSchedule(
+                homeTeam = HomeTeam(
+                    teamFullName = homeTeamInfo.teamFullName,
+                    teamId = homeTeamInfo.teamId,
+                    teamLogo = homeTeamInfo.teamLogoUrl,
+                    teamShortName = homeTeamInfo.teamShortName,
+                    teamScore = scheduleItem.homeTeam.teamScore
+                ),
+                visitedTeam = VisitedTeam(
+                    teamFullName = visitedTeamInfo.teamFullName,
+                    teamId = visitedTeamInfo.teamId,
+                    teamLogo = visitedTeamInfo.teamLogoUrl,
+                    teamShortName = visitedTeamInfo.teamShortName,
+                    teamScore = scheduleItem.visitedTeam.teamScore
+                ),
+                gameDate = formatGameDate(scheduleItem.gameTimeAndDate),
                 gameStatus = scheduleItem.gameStatus,
-                gameTime = scheduleItem.matchTime.replace(" ET", "").toUpperCase(Locale.ENGLISH),
+                gameTime = scheduleItem.matchTime.replace(" ET", "").uppercase(Locale.ENGLISH),
                 gameYearAndMonth = formatGameYearAndMonth(scheduleItem.gameTimeAndDate),
                 gameVenue = scheduleItem.arenaCityName,
-                buyTicket = scheduleItem.buyTicket ?: ""
+                buyTicket = scheduleItem.buyTicket.orEmpty()
             )
-            teamsScheduleList.add(teamsSchedule)
         }
+
         return teamsScheduleList
+    }
+
+    private inline fun <reified T> parseJsonAsset(fileName: String): T {
+        val json = context.assets.open(fileName).bufferedReader().use { it.readText() }
+        return Gson().fromJson(json, T::class.java)
     }
 }

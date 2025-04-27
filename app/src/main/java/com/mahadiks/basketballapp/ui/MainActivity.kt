@@ -16,9 +16,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.compose.rememberNavController
 import com.mahadiks.basketballapp.ui.nav.AppNavGraph
 import com.mahadiks.basketballapp.ui.theme.BasketballAppTheme
-import com.mahadiks.basketballapp.viewmodel.ScheduleViewModel
+import com.mahadiks.basketballapp.ui.viewmodel.ScheduleViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalMaterial3Api::class)
     @RequiresApi(Build.VERSION_CODES.O)

@@ -27,7 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.mahadiks.basketballapp.ui.components.GameCard
-import com.mahadiks.basketballapp.viewmodel.ScheduleViewModel
+import com.mahadiks.basketballapp.ui.viewmodel.ScheduleViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -38,7 +38,7 @@ fun ScheduleScreen(modifier: Modifier, viewModel: ScheduleViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        if (viewModel.isLoading) {
+        if (viewModel.isLoading.value) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
@@ -55,6 +55,10 @@ fun ScheduleScreen(modifier: Modifier, viewModel: ScheduleViewModel) {
                 }
             }
 
+        } else if (viewModel.isError.value) {
+            ErrorScreen {
+                viewModel.retry()
+            }
         } else {
             val scheduleList = viewModel.teamsSchedule.observeAsState(initial = emptyList())
             val list = scheduleList.value.toList()

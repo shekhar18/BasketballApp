@@ -8,7 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.mahadiks.basketballapp.ui.screens.ScheduleScreen
-import com.mahadiks.basketballapp.viewmodel.ScheduleViewModel
+import com.mahadiks.basketballapp.ui.viewmodel.ScheduleViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable

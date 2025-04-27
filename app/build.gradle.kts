@@ -2,7 +2,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-
+    id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
 
 }
 
@@ -39,6 +40,9 @@ android {
     buildFeatures {
         compose = true
     }
+    kapt {
+        correctErrorTypes=true
+    }
 }
 
 dependencies {
@@ -59,17 +63,22 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-
+    //livedata lib.
     implementation(libs.androidx.runtime.livedata)
+    //navigation lib
     implementation(libs.androidx.navigation.compose)
-
     implementation(libs.androidx.foundation)
 
+    //Gson Lib.
     implementation(libs.gson)
-
+    //Image Lib
     implementation(libs.coil.compose)
 
+    //hilt lib
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
 
+    implementation (libs.lottie.compose)
 
 
 }
